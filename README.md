@@ -6,3 +6,6 @@ https://drive.google.com/file/d/18CFviIp3V5l5QSUH0UBQH4FZ8OIo4lCE/view?usp=shari
 
 ## detectron2 
 https://github.com/facebookresearch/detectron2
+
+## modanet dataset
+https://github.com/eBay/modanet
