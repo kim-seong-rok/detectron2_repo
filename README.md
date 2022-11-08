@@ -12,4 +12,6 @@ https://github.com/eBay/modanet
 
 ### output instance segmentation
 ![image](https://user-images.githubusercontent.com/84129317/200466527-d4d1e45d-11d8-4b65-b4fa-2af2dec32466.png)
+![image](https://user-images.githubusercontent.com/84129317/200466646-bc7f7188-28bb-4cb8-8e0c-1dfd2398dcc2.png)
+
 
