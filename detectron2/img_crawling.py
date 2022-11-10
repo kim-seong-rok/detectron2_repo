@@ -5,6 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 from selenium.webdriver.common.by import By
 import urllib.request
+# mysqlclient install error 발생 시 sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
 import MySQLdb
 import boto3
 from botocore.client import Config

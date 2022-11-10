@@ -30,8 +30,8 @@ predictor = DefaultPredictor(cfg)
 #predict from your pic
 
 def cloth_seg(image):
-  i = io.imread(image)
-  i = cv2.resize(i, dsize=(300, 450), interpolation=cv2.INTER_AREA)
+  # i = cv2.imread(image)
+  i = cv2.resize(image, dsize=(300, 450), interpolation=cv2.INTER_AREA)
   
   out = predictor(i)
   
