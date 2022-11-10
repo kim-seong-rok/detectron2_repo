@@ -13,6 +13,7 @@ from img_crawling import naver_crawling
 import schedule
 import time
 import running
+import json
 
 ### 원본 코드 ###
 # app = Flask(__name__)
@@ -79,27 +80,27 @@ def upload():
         
         # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         
-        img = Image.fromarray(img.astype('uint8'))
+        # img = Image.fromarray(img.astype('uint8'))
         
         # img.show() 
         
         # image_parsing {"outer" : [np.array, ...], "shortsleeve" : [np.array, ...], }
         array_top, array_bottom = running.cloth_seg(img)
+        dict_top = {}
+        dict_bottom = {}
         
         if array_top:
             for key in array_top.keys():
                 img_top = Image.fromarray(array_top.get(key).astype('uint8'))
                 
                 # Run Search
-                dict_top = {}
-                
                 query_top = fe.extract(img_top)
                 dists_top = np.linalg.norm(features_top - query_top, axis=1)
                 ids_top = np.argsort(dists_top)[:100] # top result sort
                 
                 result_img_path_top = [df_top.iloc[id]['path_url'] for id in ids_top]
                 result_img_link_top = [df_top.iloc[id]['url'] for id in ids_top]
-                result_img_score_top = [dists_top[id] for id in ids_top]
+                result_img_score_top = [float(dists_top[id]) for id in ids_top] # float32 타입으로 되어 있는 것을 float 타입으로 바꿔주어야지 json으로 변경 가능. 리스트에 있어도 마찬가지
                 
                 dict_top[key] = {"result_img_path_top" : result_img_path_top,
                                 "result_img_link_top" : result_img_link_top,
@@ -111,15 +112,13 @@ def upload():
                 img_bottom = Image.fromarray(array_bottom.get(key).astype('uint8'))
             
                 # Run Search
-                dict_bottom = {}
-                
                 query_bottom = fe.extract(img_bottom)
                 dists_bottom = np.linalg.norm(features_bottom - query_bottom, axis=1)
                 ids_bottom = np.argsort(dists_bottom)[:100] # top result sort
                 
                 result_img_path_bottom = [df_bottom.iloc[id]['path_url'] for id in ids_bottom]
                 result_img_link_bottom = [df_bottom.iloc[id]['url'] for id in ids_bottom]
-                result_img_score_bottom = [dists_bottom[id] for id in ids_bottom]
+                result_img_score_bottom = [float(dists_bottom[id]) for id in ids_bottom] # float32 타입으로 되어 있는 것을 float 타입으로 바꿔주어야지 json으로 변경 가능. 리스트에 있어도 마찬가지
                 
                 dict_bottom[key] = {"result_img_path_bottom" : result_img_path_bottom,
                                                 "result_img_link_bottom" : result_img_link_bottom,
@@ -128,9 +127,9 @@ def upload():
         
         return flask.jsonify({"result" : "true",
                               "number_of_top_category" : str(len(array_top)),
-                              "top" : str(dict_top),
+                              "top" : dict_top,
                               "number_of_bottom_category" : str(len(array_bottom)),
-                              "bottom" : str(dict_bottom)})
+                              "bottom" : dict_bottom})
     else:
         return flask.jsonify({"result" : "false"})
     
